@@ -21,7 +21,8 @@ LIBS +=    -lopencv_core411 \
 LIBS += -lws2_32
 
 SOURCES += \
-    main.cpp
+    main.cpp \
+    matching.cpp
 
 
 DISTFILES += \
@@ -32,4 +33,5 @@ DISTFILES += \
 #else: unix:!android: target.path = /opt/$${TARGET}/bin
 #!isEmpty(target.path): INSTALLS += target
 
-HEADERS +=
+HEADERS += \
+    matching.hpp
