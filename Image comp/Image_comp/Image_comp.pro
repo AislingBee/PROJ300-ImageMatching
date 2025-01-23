@@ -21,6 +21,7 @@ LIBS +=    -lopencv_core411 \
 LIBS += -lws2_32
 
 SOURCES += \
+    checkloaded.cpp \
     main.cpp \
     matching.cpp
 
@@ -34,4 +35,5 @@ DISTFILES += \
 #!isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    checkloaded.hpp \
     matching.hpp

@@ -1,4 +1,5 @@
 // my header files
+#include <filesystem>
 #include <iostream>
 #include <vector>
 #include "opencv2/core/core.hpp"
@@ -7,44 +8,59 @@
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 #include "matching.hpp"
+#include "checkloaded.hpp"
 
 using namespace std;
 using namespace cv;
 
+// paths to images used in code
+#define TEMPLATE_PATH "../images/blackX_centre.png"
+#define TEST_PATH "../images/blackX_more.png"
 
-bool ImageLoad(Mat);
 
 int main()
 {
     Mat img_template;
     Mat test_input;
 
-    //QCoreApplication a(argc, argv);
     const char *vid_window = "Video Feed with Match Square";
     namedWindow(vid_window, WINDOW_AUTOSIZE);
     const char *match_results = "Image Matching";
     namedWindow(match_results, WINDOW_AUTOSIZE);
 
-    // Open the Default Camera
-    VideoCapture input_cap(0);
-    if (!input_cap.isOpened()) {
-        cerr << "Error: Unable to open camera\n";
-        return -1;
-    }
+    // Open the Default Camera on laptop
+    VideoCapture input_cap;
 
-    // Open the template and test image
-    img_template = imread("../images/blackX_centre.png");
-    ImageLoad(img_template);
-    test_input = imread("../images/blackX_more.png");
-    ImageLoad(test_input);
+    /* https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
+    open the default camera using default API
+    cap.open(0);
+    OR advance usage: select any API backend*/
+    int deviceID = 0;             // 0 = open default camera
+    int apiID = CAP_ANY;      // 0 = autodetect default API
+    // open selected camera using selected API
+    input_cap.open(deviceID, apiID);
+    if (!CameraOpen(input_cap)){
+        return-1;}
+
+    // Open the template and test images
+    img_template = imread(TEMPLATE_PATH);
+    if (!ImageLoad(img_template)){
+        return -1;}
+
+    test_input = imread(TEST_PATH);
+    if (!ImageLoad(test_input)){
+        return -1;}
+
 
     while(1){
         // Read the camera input
-        Mat cap_frame;
-        input_cap.read(cap_frame);
-        ImageLoad(cap_frame);
-
         Mat img;
+        Mat cap_frame;
+
+        input_cap.read(cap_frame);
+        if (!ImageLoad(cap_frame)){
+            return -1;}
+
         cap_frame.copyTo(img);
 
         // match input image to template
@@ -59,16 +75,6 @@ int main()
     return 0;
 }
 
-// Functions
-bool ImageLoad(Mat image)
-{
-    if(image.empty())
-    {
-        cout<<"Error: Image cant be loaded"<<endl;
-        return false;
-    }
-    return true;
-}
 
 
 
