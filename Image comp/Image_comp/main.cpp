@@ -1,5 +1,4 @@
 // my header files
-#include <filesystem>
 #include <iostream>
 #include <vector>
 #include "opencv2/core/core.hpp"
@@ -7,6 +6,7 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/features2d/features2d.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
+//My Headers
 #include "matching.hpp"
 #include "checkloaded.hpp"
 
@@ -39,11 +39,14 @@ int main()
     int apiID = CAP_ANY;      // 0 = autodetect default API
     // open selected camera using selected API
     input_cap.open(deviceID, apiID);
+
+    // Check if camera is opened
     if (!CameraOpen(input_cap)){
         return-1;}
 
     // Open the template and test images
     img_template = imread(TEMPLATE_PATH);
+    //cvtColor(img_template,img_template,COLOR_BGR2GRAY);
     if (!ImageLoad(img_template)){
         return -1;}
 
@@ -62,8 +65,10 @@ int main()
             return -1;}
 
         cap_frame.copyTo(img);
+        //cvtColor(cap_frame,cap_frame,COLOR_BGR2GRAY);
 
-        // match input image to template
+        // match input frames to template
+        // TODO: convert img and template to greyscale
         Mat result = MatchFrames(cap_frame,img_template,img);
 
         // Display the windows :)
