@@ -56,10 +56,10 @@ int main()
 
 
     while(1){
-        // Read the camera input
         Mat img;
         Mat cap_frame;
 
+        // Read the camera input
         input_cap.read(cap_frame);
         if (!ImageLoad(cap_frame)){
             return -1;}
