@@ -68,7 +68,6 @@ int main()
         //cvtColor(cap_frame,cap_frame,COLOR_BGR2GRAY);
 
         // match input frames to template
-        // TODO: convert img and template to greyscale
         Mat result = MatchFrames(cap_frame,img_template,img);
 
         // Display the windows :)
