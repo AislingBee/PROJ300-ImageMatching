@@ -65,10 +65,13 @@ int main()
             return -1;}
 
         cap_frame.copyTo(img);
+        //test_input.copyTo(img);
         //cvtColor(cap_frame,cap_frame,COLOR_BGR2GRAY);
 
         // match input frames to template
         Mat result = MatchFrames(cap_frame,img_template,img);
+        //Mat result = MatchFrames(test_input,img_template,img);
+
 
         // Display the windows :)
         imshow(vid_window,img);
