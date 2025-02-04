@@ -28,14 +28,13 @@ int main()
 {
     Mat img_template;
     VideoCapture input_cap;
+    Mat test_input;
 
     // Load and name windows
     const char *vid_window = "Video Feed with Match Square";
     namedWindow(vid_window, WINDOW_AUTOSIZE);
-  //  const char *match_results = "Image Matching";
+   // const char *match_results = "Image Matching";
    // namedWindow(match_results, WINDOW_AUTOSIZE);
-
-
 
     // Open the template and test images
     img_template = imread(TEMPLATE_PATH);
@@ -44,7 +43,6 @@ int main()
         return -1;
     }
 
-    Mat test_input;
     if (TEST==true)
     {
         test_input = imread(TEST_PATH);
@@ -55,8 +53,8 @@ int main()
     }
     else{
         /* https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
-    open the default camera using default API
-    OR advance usage: select any API backend*/
+        open the default camera using default API
+        OR advance usage: select any API backend*/
         int deviceID = CAMERA;
         int apiID = CAP_ANY;      // 0 = autodetect default API
         input_cap.open(deviceID, apiID);
@@ -140,13 +138,11 @@ int main()
 
         }
 
+        // Display the windows :)
         imshow(vid_window,img);
         //imshow(match_results,result);
-        // Display the windows :)
-
         waitKey(1);
     }
-
     return 0;
 }
 
