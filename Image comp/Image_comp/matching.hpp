@@ -8,10 +8,13 @@
 using namespace cv;
 using namespace std;
 
+Mat RotateTemplate(Mat templ, double angle);
+Mat ScaleTemplate(Mat templ, double scale);
 /*
     Uses rectangle, matchTemplate (TM_SQDIFF_NORMED) and normalize (NORM_MINMAX) from opencv2/imgproc, minMaxLoc from opencv2/core.
     Returns result from match template and draws rectangles around closest match over the 'img' frame.
 */
+
 Mat MatchFrames(Mat frame,Mat image_template,Mat img);
 
 #endif // MATCHING_HPP
