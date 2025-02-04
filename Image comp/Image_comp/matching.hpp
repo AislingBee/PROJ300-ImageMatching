@@ -15,6 +15,14 @@ Mat ScaleTemplate(Mat templ, double scale);
     Returns result from match template and draws rectangles around closest match over the 'img' frame.
 */
 
-Mat MatchFrames(Mat frame,Mat image_template,Mat img);
+Mat MatchFrames(Mat frame,Mat image_template,Mat img,double angle);
+
+// not really useful, may remove
+enum draw{
+    draw_rectangle=1,
+    draw_text=2
+};
+void DrawResults(Mat frame,Mat templ,Point location,draw shape);
+
 
 #endif // MATCHING_HPP

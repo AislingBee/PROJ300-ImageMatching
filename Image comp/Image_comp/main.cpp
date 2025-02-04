@@ -1,5 +1,6 @@
 // my header files
 #include <iostream>
+
 #include <vector>
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgcodecs.hpp"
@@ -10,14 +11,17 @@
 #include "matching.hpp"
 #include "checkloaded.hpp"
 
+
 using namespace std;
 using namespace cv;
 
 // paths to images used in code
-#define TEMPLATE_PATH "../images/blackX_centre.png"
-#define TEST_PATH "../images/blackX_more.png"
+//#define TEMPLATE_PATH "../images/blackX_centre.png"
+//#define TEST_PATH "../images/blackX_more.png"
+#define TEMPLATE_PATH "../images/cat_template.png"
+#define TEST_PATH "../images/cat.png"
 #define TEST false
-#define CAMERA 0
+#define CAMERA 1
 // 0 = open default camera
 
 int main()
@@ -78,30 +82,59 @@ int main()
             cap_frame.copyTo(img);
 
             //rotate template
-            rotated_templ= RotateTemplate(img_template,45);
-            result = MatchFrames(cap_frame,rotated_templ,img);
-            // match input frames to template
-            //result = MatchFrames(cap_frame,img_template,img);
+// #include<iostream>
+//             using namespace std;
+//             int main()
+//             {
+//                 int arr[]={1,2,3,4,5};   //array initialization
+//                 cout<<"The elements are: ";
+//                 for(int i : arr)
+//                 {
+//                     cout<<i<<" ";
+//                 }
+//                 return 0;
+//             }
+            double arr[]={0,45,90,135,180,225,270,315};
+            for(int i:arr){
+
+                rotated_templ= RotateTemplate(img_template,i);
+                result = MatchFrames(cap_frame,rotated_templ,img,i);
+                // match input frames to template
+                //result = MatchFrames(cap_frame,img_template,img);
+                imshow("template",img_template);
+                imshow("rot_template",rotated_templ);
+            waitKey(1);
+            }
         }
 
         else
         {
             test_input.copyTo(img);
-            result = MatchFrames(test_input,img_template,img);
-
+            //result = MatchFrames(test_input,img_template,img,i);
+            double arr[]={0,45,90,135,180,225,270,315};
+            for(int i:arr){
+                //clog<<i<<"\n";
+                rotated_templ= RotateTemplate(img_template,i);
+                result = MatchFrames(test_input,rotated_templ,img,i);
+                // match input frames to template
+                //result = MatchFrames(cap_frame,img_template,img);
+                imshow("template",img_template);
+                imshow("rot_template",rotated_templ);
             //test template scale and rotation
-            Mat scaled=ScaleTemplate(img_template,0.5);
-            imshow("0.5",scaled);
-            Mat rotate=RotateTemplate(img_template,90);
-            imshow("90",rotate);
+           // Mat scaled=ScaleTemplate(img_template,0.5);
+            //imshow("0.5",scaled);
+            //Mat rotate=RotateTemplate(img_template,90);
+            //imshow("90",rotate);
+            waitKey(1);
+
+            }
+            //
         }
 
-
-        // Display the windows :)
-        imshow("template",img_template);
-        imshow("rot_template",rotated_templ);
         imshow(vid_window,img);
         imshow(match_results,result);
+        // Display the windows :)
+
         waitKey(1);
     }
 
