@@ -20,33 +20,22 @@ using namespace cv;
 //#define TEST_PATH "../images/blackX_more.png"
 #define TEMPLATE_PATH "../images/cat_template.png"
 #define TEST_PATH "../images/cat.png"
-#define TEST false
+#define TEST true
 #define CAMERA 1
 // 0 = open default camera
 
 int main()
 {
     Mat img_template;
+    VideoCapture input_cap;
 
     // Load and name windows
     const char *vid_window = "Video Feed with Match Square";
     namedWindow(vid_window, WINDOW_AUTOSIZE);
-    const char *match_results = "Image Matching";
-    namedWindow(match_results, WINDOW_AUTOSIZE);
+  //  const char *match_results = "Image Matching";
+   // namedWindow(match_results, WINDOW_AUTOSIZE);
 
-    /* https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
-    open the default camera using default API
-    OR advance usage: select any API backend*/
-    VideoCapture input_cap;
-    int deviceID = CAMERA;
-    int apiID = CAP_ANY;      // 0 = autodetect default API
-    input_cap.open(deviceID, apiID);
 
-    // Check if camera is opened
-    if (!CameraOpen(input_cap))
-    {
-        return-1;
-    }
 
     // Open the template and test images
     img_template = imread(TEMPLATE_PATH);
@@ -64,12 +53,29 @@ int main()
             return -1;
         }
     }
+    else{
+        /* https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
+    open the default camera using default API
+    OR advance usage: select any API backend*/
+        int deviceID = CAMERA;
+        int apiID = CAP_ANY;      // 0 = autodetect default API
+        input_cap.open(deviceID, apiID);
+
+        // Check if camera is opened
+        if (!CameraOpen(input_cap))
+        {
+            return-1;
+        }
+    }
 
     while(1)
     {
+        double Val;
+        Point Loc;
         Mat img;
         Mat result;
-        Mat rotated_templ;
+        Mat scalRot_templ;
+        Mat scaled_templ;
         // see if we load the test frame or camera
         if (TEST==false)
         {
@@ -81,58 +87,63 @@ int main()
             }
             cap_frame.copyTo(img);
 
-            //rotate template
-// #include<iostream>
-//             using namespace std;
-//             int main()
-//             {
-//                 int arr[]={1,2,3,4,5};   //array initialization
-//                 cout<<"The elements are: ";
-//                 for(int i : arr)
-//                 {
-//                     cout<<i<<" ";
-//                 }
-//                 return 0;
-//             }
-            double arr[]={0,45,90,135,180,225,270,315};
-            for(int i:arr){
+            double scales[]={0.25,0.5,1};
+            double angles[]={0,45,90,135,180,225,270,315};
+            for(double j:scales)
+            {
+                for(int i:angles)
+                {
+                    scaled_templ= ScaleTemplate(img_template,j);
+                    scalRot_templ= RotateTemplate(scaled_templ,i);
+                    // double matchVal= CheckMatch(cap_frame,scalRot_templ);
+                    // double match_high=0.2;
+                    // double match_low=0.0009;
 
-                rotated_templ= RotateTemplate(img_template,i);
-                result = MatchFrames(cap_frame,rotated_templ,img,i);
-                // match input frames to template
-                //result = MatchFrames(cap_frame,img_template,img);
-                imshow("template",img_template);
-                imshow("rot_template",rotated_templ);
-            waitKey(1);
+                    // if (match_low<matchVal&&matchVal<match_high)
+                    // {
+                    //     result = MatchFrames(cap_frame,scalRot_templ,img,i,j);
+                    // }
+                    // // match input frames to template
+                    // //result = MatchFrames(cap_frame,img_template,img);
+                }
             }
         }
 
         else
         {
+            // TEST CODE FOR WHEN NEEDED //
             test_input.copyTo(img);
             //result = MatchFrames(test_input,img_template,img,i);
-            double arr[]={0,45,90,135,180,225,270,315};
-            for(int i:arr){
-                //clog<<i<<"\n";
-                rotated_templ= RotateTemplate(img_template,i);
-                result = MatchFrames(test_input,rotated_templ,img,i);
-                // match input frames to template
-                //result = MatchFrames(cap_frame,img_template,img);
-                imshow("template",img_template);
-                imshow("rot_template",rotated_templ);
-            //test template scale and rotation
-           // Mat scaled=ScaleTemplate(img_template,0.5);
-            //imshow("0.5",scaled);
-            //Mat rotate=RotateTemplate(img_template,90);
-            //imshow("90",rotate);
-            waitKey(1);
+            // TO DO! MOVE THIS ALL TO MATCHING.CPP
+            double scales[]={0.25,0.5,1};
+            double angles[]={0,45,90,135,180,225,270,315};
+            for(double j:scales){
+                for(int i:angles){
+                    scaled_templ= ScaleTemplate(img_template,j);
+                    scalRot_templ= RotateTemplate(scaled_templ,i);
+                    //result = MatchFrames(test_input,scalRot_templ,img,i,j);
 
+                    result=CheckMatch(test_input,scalRot_templ,&Loc,&Val);
+                    double match_high=0.2;
+                    double match_low=0.0009;
+                    clog<<"val: "<<Val<<"\n";
+                    if (match_low<Val&&Val<match_high)
+                    {
+                        DrawResults(img,img_template,Loc,draw_rectangle);
+                       // result = MatchFrames(test_input,scalRot_templ,img,i,j);
+                    }
+                    // match input frames to template
+                    //result = MatchFrames(cap_frame,img_template,img);
+                    // imshow("template",img_template);
+                    imshow("rot_template",scalRot_templ);
+                    waitKey(1);
+                }
             }
-            //
+
         }
 
         imshow(vid_window,img);
-        imshow(match_results,result);
+        //imshow(match_results,result);
         // Display the windows :)
 
         waitKey(1);

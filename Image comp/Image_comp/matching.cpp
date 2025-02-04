@@ -1,5 +1,6 @@
 #include "matching.hpp"
 
+
 Mat RotateTemplate(Mat templ, double angle)
 {
     Mat rotate_temp;
@@ -14,22 +15,41 @@ Mat RotateTemplate(Mat templ, double angle)
 Mat ScaleTemplate(Mat templ, double scale)
 {
     Mat scaled_temp;
-    resize(templ, scaled_temp, Size(), scale, scale, INTER_AREA);
+    if (scale<1){
+        resize(templ, scaled_temp, Size(), scale, scale, INTER_AREA);
+    }else if (scale==1){
+        scaled_temp=templ;
+    }
+    else{
+        resize(templ, scaled_temp, Size(), scale, scale, INTER_LINEAR);
+    }
     //scaled_temp=templ;
     return scaled_temp;
 }
 
+Mat CheckMatch(Mat frame, Mat templ, Point* matchLoc, double* matchVal)
+{
+    Mat result;
+    double minVal, maxVal;
+    Point minLoc, maxLoc;
+
+    matchTemplate(frame, templ, result,TM_SQDIFF_NORMED);
+    minMaxLoc(result,&minVal,&maxVal,&minLoc,&maxLoc,Mat());
+    //clog<<"match\n";
+    *matchLoc=minLoc;
+    *matchVal=minVal;
+    //return minVal;
+    return result;
+}
+
 //double match_filter=4.0e-8;
-Mat MatchFrames(Mat frame, Mat templ, Mat img,double angle)
+Mat MatchFrames(Mat frame, Mat templ, Mat img,double angle,double scale)
 {
 
     Mat result;
 
     // match template to the camera frame
     matchTemplate(frame, templ, result,TM_SQDIFF_NORMED);
-    //int alpha_low=0;
-    //int beta_high=100;
-    //normalize(result,result,alpha_low,beta_high, NORM_MINMAX, -1); // puts all results in the scale of 0-1
 
     double minVal, maxVal;
     Point minLoc, maxLoc, matchLoc;
@@ -44,7 +64,7 @@ Mat MatchFrames(Mat frame, Mat templ, Mat img,double angle)
     if (match_low<minVal&&minVal<match_high){
     // drawing the results
         //cout<<"match found\n";
-        clog<<"match found. angle: "<<angle<<" |||| minVal: "<<minVal<<"\n";
+        clog<<"match found. angle: ["<<angle<<"] scale: ["<<scale<<"] |||| minVal: "<<minVal<<"\n";
         DrawResults(img,templ,matchLoc,draw_rectangle);
         DrawResults(result,templ,matchLoc,draw_rectangle);
         //rectangle(result,matchLoc,Point(matchLoc.x+templ.cols,matchLoc.y+templ.rows),Scalar(0,0,0),2,8,0);
@@ -52,7 +72,7 @@ Mat MatchFrames(Mat frame, Mat templ, Mat img,double angle)
     }
     else{
         //cout<<"no match found\n";
-        clog<<"no match found. angle: "<<angle<<" |||| minVal: "<<minVal<<"\n";
+        clog<<"no match found. angle: ["<<angle<<"] scale: ["<<scale<<"] |||| minVal: "<<minVal<<"\n";
         putText(img,"X",Point(100,100),2,2.0,Scalar(0,0,0),2,2,0);
         return result;
     }
