@@ -79,8 +79,8 @@ int main()
         // see if we load the test frame or camera
         if (TEST==false)
         {
-            Mat cap_frame;
             // Read the camera input
+            Mat cap_frame;
             input_cap.read(cap_frame);
             if (!ImageLoad(cap_frame)){
                 return -1;
@@ -89,22 +89,20 @@ int main()
 
             double scales[]={0.25,0.5,1};
             double angles[]={0,45,90,135,180,225,270,315};
-            for(double j:scales)
-            {
-                for(int i:angles)
-                {
+            for(double j:scales){
+                for(int i:angles){
+
                     scaled_templ= ScaleTemplate(img_template,j);
                     scalRot_templ= RotateTemplate(scaled_templ,i);
-                    // double matchVal= CheckMatch(cap_frame,scalRot_templ);
-                    // double match_high=0.2;
-                    // double match_low=0.0009;
 
-                    // if (match_low<matchVal&&matchVal<match_high)
-                    // {
-                    //     result = MatchFrames(cap_frame,scalRot_templ,img,i,j);
-                    // }
-                    // // match input frames to template
-                    // //result = MatchFrames(cap_frame,img_template,img);
+                    result=CheckMatch(test_input,scalRot_templ,&Loc,&Val);
+                    double match_high=0.2;
+                    double match_low=0.0009;
+
+                    if (match_low<Val&&Val<match_high)
+                    {
+                        DrawResults(img,img_template,Loc,draw_rectangle);
+                    }
                 }
             }
         }
@@ -119,14 +117,14 @@ int main()
             double angles[]={0,45,90,135,180,225,270,315};
             for(double j:scales){
                 for(int i:angles){
+
                     scaled_templ= ScaleTemplate(img_template,j);
                     scalRot_templ= RotateTemplate(scaled_templ,i);
-                    //result = MatchFrames(test_input,scalRot_templ,img,i,j);
 
                     result=CheckMatch(test_input,scalRot_templ,&Loc,&Val);
                     double match_high=0.2;
                     double match_low=0.0009;
-                    clog<<"val: "<<Val<<"\n";
+
                     if (match_low<Val&&Val<match_high)
                     {
                         DrawResults(img,img_template,Loc,draw_rectangle);
@@ -135,8 +133,8 @@ int main()
                     // match input frames to template
                     //result = MatchFrames(cap_frame,img_template,img);
                     // imshow("template",img_template);
-                    imshow("rot_template",scalRot_templ);
-                    waitKey(1);
+                    //imshow("rot_template",scalRot_templ);
+                    //waitKey(1);
                 }
             }
 
