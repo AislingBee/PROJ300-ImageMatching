@@ -35,10 +35,10 @@ Mat CheckMatch(Mat frame, Mat templ, Point* matchLoc, double* matchVal)
 
     matchTemplate(frame, templ, result,TM_SQDIFF_NORMED);
     minMaxLoc(result,&minVal,&maxVal,&minLoc,&maxLoc,Mat());
-    //clog<<"match\n";
+
     *matchLoc=minLoc;
     *matchVal=minVal;
-    //return minVal;
+
     return result;
 }
 
@@ -88,9 +88,6 @@ void DrawResults(Mat frame,Mat templ,Point location,draw shape){
         case draw_text:
             break;
     }
-
-
-
 
 }
 // Mat MatchRotatedFrames(Mat frame, Mat templ, Mat img)
