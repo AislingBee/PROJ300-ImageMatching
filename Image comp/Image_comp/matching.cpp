@@ -6,10 +6,14 @@ bool ScaleandMatch(Mat frame, Mat templ)
     double Val;
     double scales[]={1,0.5,1.5};
     double angles[]={0,90,180,270};
-    double match_high=0.23;
+    double match_high=0.235;
     double match_low=0.0009;
 // maybe do a standard check of 1 and 0 for scale and angle and if Val is below certain number then do the various scales and angles?
-
+    //result=CheckMatch(frame,templ,&Loc,&Val);
+    // if (Val>0.6){
+    //     return false;
+    // }
+    // else{
     for(double j:scales)
     {
         for(int i:angles)
@@ -29,7 +33,7 @@ bool ScaleandMatch(Mat frame, Mat templ)
         }
     }
     return false;
-}
+    }//}
 
 Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
 {

@@ -91,24 +91,21 @@ int main()
             }
             cap_frame.copyTo(img);
 
-            Match_found=false;
             // Check for match
-            while(Match_found==false)
+            Match_found= ScaleandMatch(cap_frame,img_template);
+
+            if (Match_found==false)
             {
-                Match_found= ScaleandMatch(cap_frame,img_template);
-
-                    if (Match_found==false)
-                    {
-                        putText(img,"X",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
-                        Match_found=true;// figure out a better solution for this
-                    }
-                    else{
-                       putText(img,"match found",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);// DrawResults(img,scalRot_templ,Loc,draw_rectangle);
-                    }
-                }
-
+                putText(img,"X",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
+                //Match_found=true;// figure out a better solution for this
             }
-        imshow("template",img_template);
+            else{
+                putText(img,"match found",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);// DrawResults(img,scalRot_templ,Loc,draw_rectangle);
+            }
+        }
+
+
+            imshow("template",img_template);
             imshow(vid_window,img);//waitKey(1);
             waitKey(1);
         }
