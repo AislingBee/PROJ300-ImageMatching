@@ -29,6 +29,7 @@ int main()
     Mat test_input;
     Mat test_input2;
     Mat test_input3;
+    Mat test_input4;
 
     // Load and name windows
     const char *vid_window = "Video Feed with Match Square";
@@ -52,6 +53,7 @@ int main()
         }
         test_input2 = imread("../images/cat_90.png");
         test_input3 = imread("../images/cat_90_0.5.png");
+        test_input4 = imread("../images/blackX_more.png");
     }
     else{
         /* https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
@@ -79,13 +81,6 @@ int main()
         double scales[]={0.25,0.5,1,1.5,2};
         double angles[]={0,45,90,135,180,225,270,315};
 
-        // 8*3 = 24 checks for each frame... is that too much?
-
-        //Mat result;
-        //Mat scalRot_templ;
-        //Mat scaled_templ;
-
-
         // see if we load the test frame or camera
         if (TEST==false)
         {
@@ -105,8 +100,7 @@ int main()
                 {
                     for(int i:angles)
                     {
-                        scaled_templ= ScaleTemplate(img_template,j);
-                        scalRot_templ= RotateTemplate(scaled_templ,i);
+                        scalRot_templ=ScaleandRotateTemplate(img_template,i,j);
                         result=CheckMatch(cap_frame,scalRot_templ,&Loc,&Val);
 
                         if (match_low<Val&&Val<match_high)
@@ -121,13 +115,12 @@ int main()
 
         else
         {
-            Mat cats[]={test_input,test_input2,test_input3};
+            Mat cats[]={test_input,test_input2,test_input3,test_input4};
             // TEST CODE FOR WHEN NEEDED //
             for (Mat c:cats)
             {
-                Match_found=false;
                 c.copyTo(img);
-               // cvtColor(c,img,COLOR_RGB2GRAY);
+                Match_found=false;
                 // TO DO! MOVE THIS ALL TO MATCHING.CPP?
 
                 // while means the for loops stop when match is found
@@ -148,7 +141,6 @@ int main()
                             {
                                 result=CheckMatch(c,scalRot_templ,&Loc,&Val);
 
-                                //clog<<"val: "<<Val<<"\n";
                                 if (match_low<Val&&Val<match_high)
                                 {
                                     DrawResults(img,scalRot_templ,Loc,draw_rectangle);
@@ -160,7 +152,8 @@ int main()
                     }
                     if (Match_found==false)
                     {
-                        DrawResults(img,img_template,Point (0,0), draw_rectangle);
+                        putText(img,"X",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
+                        Match_found=true;// figure out a better solution for this
                     }
                 }
                 imshow(vid_window,img);//waitKey(1);
@@ -169,13 +162,8 @@ int main()
 
             // Display the windows :)
             // imshow("rot_template",scalRot_templ);
-
-            //imshow(match_results,result);
+            // imshow(match_results,result);
         }
     }
     return 0;
 }
-
-
-
-
