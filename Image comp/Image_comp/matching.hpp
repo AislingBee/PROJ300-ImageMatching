@@ -8,6 +8,7 @@
 using namespace cv;
 using namespace std;
 
+Mat ScaleandRotateTemplate(Mat templ, double angle, double scale);
 Mat RotateTemplate(Mat templ, double angle);
 Mat ScaleTemplate(Mat templ, double scale);
 Mat CheckMatch(Mat frame, Mat templ,Point* matchLoc, double* matchVal);

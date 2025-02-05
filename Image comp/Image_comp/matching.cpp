@@ -1,5 +1,28 @@
 #include "matching.hpp"
 
+Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
+{
+    Mat scaled_temp;
+    Mat scaled_rotate_temp;
+    Point centrePoint (scaled_temp.size().width/2, scaled_temp.size().height/2);
+
+    // scale
+    if (scale<1){
+        resize(templ, scaled_temp, Size(), scale, scale, INTER_AREA);
+    }else if (scale==1){
+        scaled_temp=templ;
+    }
+    else{
+        resize(templ, scaled_temp, Size(), scale, scale, INTER_LINEAR);
+    }
+
+    // rotate
+    Mat rotMatrix=getRotationMatrix2D(centrePoint,angle,1.0);
+    warpAffine(scaled_temp,scaled_rotate_temp,rotMatrix,Size(scaled_temp.size().width,scaled_temp.size().height));
+
+    // return
+    return scaled_rotate_temp;
+}
 
 Mat RotateTemplate(Mat templ, double angle)
 {

@@ -78,7 +78,7 @@ int main()
         bool Match_found=false;
         double scales[]={0.25,0.5,1,1.5,2};
         double angles[]={0,45,90,135,180,225,270,315};
-        Mat cats[]={test_input,test_input2,test_input3};
+
         // 8*3 = 24 checks for each frame... is that too much?
 
         //Mat result;
@@ -106,19 +106,14 @@ int main()
                     for(int i:angles)
                     {
                         scaled_templ= ScaleTemplate(img_template,j);
-
-                        if((scaled_templ.size().height>img.size().height)||(scaled_templ.size().width>img.size().width)){
-                            clog<<"skipped due to non matching sizes\n";
-                        }
-                        else{
-                            scalRot_templ= RotateTemplate(scaled_templ,i);
-                            result=CheckMatch(cap_frame,scalRot_templ,&Loc,&Val);
+                        scalRot_templ= RotateTemplate(scaled_templ,i);
+                        result=CheckMatch(cap_frame,scalRot_templ,&Loc,&Val);
 
                         if (match_low<Val&&Val<match_high)
                         {
                             DrawResults(img,scalRot_templ,Loc,draw_rectangle);
                             Match_found=true;
-                        }}
+                        }
                     }
                 }
             }
@@ -126,7 +121,7 @@ int main()
 
         else
         {
-
+            Mat cats[]={test_input,test_input2,test_input3};
             // TEST CODE FOR WHEN NEEDED //
             for (Mat c:cats)
             {
