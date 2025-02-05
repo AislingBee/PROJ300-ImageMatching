@@ -127,7 +127,7 @@ int main()
             {
                 Match_found=false;
                 c.copyTo(img);
-                cvtColor(img,img,COLOR_RGB2GRAY);
+               // cvtColor(c,img,COLOR_RGB2GRAY);
                 // TO DO! MOVE THIS ALL TO MATCHING.CPP?
 
                 // while means the for loops stop when match is found
@@ -137,27 +137,29 @@ int main()
                     {
                         for(int i:angles)
                         {
-                            scaled_templ= ScaleTemplate(img_template,j);
-                            scalRot_templ= RotateTemplate(scaled_templ,i);
+                            scalRot_templ=ScaleandRotateTemplate(img_template,i,j);
 
                             if((scalRot_templ.size().height>img.size().height)||(scalRot_templ.size().width>img.size().width))
                             {
-                                clog<<"skipped due to non matching sizes\n";
+                                //clog<<"skipped due to non matching sizes\n";
+                                break;
                             }
                             else
                             {
-                            result=CheckMatch(c,scalRot_templ,&Loc,&Val);
+                                result=CheckMatch(c,scalRot_templ,&Loc,&Val);
 
-                            //clog<<"val: "<<Val<<"\n";
-                            if (match_low<Val&&Val<match_high)
-                            {
-                                DrawResults(img,scalRot_templ,Loc,draw_rectangle);
-                                Match_found=true;
-                                // clog<<"match found \n";
-                            }}
+                                //clog<<"val: "<<Val<<"\n";
+                                if (match_low<Val&&Val<match_high)
+                                {
+                                    DrawResults(img,scalRot_templ,Loc,draw_rectangle);
+                                    Match_found=true;
+                                    // clog<<"match found \n";
+                                }
+                            }
                         }
                     }
-                    if (Match_found==false){
+                    if (Match_found==false)
+                    {
                         DrawResults(img,img_template,Point (0,0), draw_rectangle);
                     }
                 }

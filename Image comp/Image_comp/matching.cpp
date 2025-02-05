@@ -2,9 +2,7 @@
 
 Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
 {
-    Mat scaled_temp;
-    Mat scaled_rotate_temp;
-    Point centrePoint (scaled_temp.size().width/2, scaled_temp.size().height/2);
+    Mat scaled_temp, scaled_rotate_temp, rotMatrix;
 
     // scale
     if (scale<1){
@@ -17,7 +15,8 @@ Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
     }
 
     // rotate
-    Mat rotMatrix=getRotationMatrix2D(centrePoint,angle,1.0);
+    Point centrePoint (scaled_temp.size().width/2, scaled_temp.size().height/2);
+    rotMatrix=getRotationMatrix2D(centrePoint,angle,1.0);
     warpAffine(scaled_temp,scaled_rotate_temp,rotMatrix,Size(scaled_temp.size().width,scaled_temp.size().height));
 
     // return
