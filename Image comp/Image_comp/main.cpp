@@ -18,8 +18,8 @@ using namespace cv;
 //#define TEST_PATH "../images/blackX_more.png"
 #define TEMPLATE_PATH "../images/cat_template_0.5.png"
 #define TEST_PATH "../images/cat.png"
-#define TEST true
-#define CAMERA 1
+#define TEST false
+#define CAMERA 0
 // 0 = open default camera
 
 int main()
@@ -72,14 +72,12 @@ int main()
 
     while(1)
     {
-        Point Loc;
+        // Point Loc;
         Mat img, result, scalRot_templ, scaled_templ;
-        double Val;
-        double match_high=0.1;
-        double match_low=0.0009;
+        //double Val;
+
         bool Match_found=false;
-        double scales[]={0.25,0.5,1,1.5,2};
-        double angles[]={0,45,90,135,180,225,270,315};
+
 
         // see if we load the test frame or camera
         if (TEST==false)
@@ -93,77 +91,84 @@ int main()
             }
             cap_frame.copyTo(img);
 
+            Match_found=false;
             // Check for match
             while(Match_found==false)
             {
-                for(double j:scales)
-                {
-                    for(int i:angles)
-                    {
-                        scalRot_templ=ScaleandRotateTemplate(img_template,i,j);
-                        result=CheckMatch(cap_frame,scalRot_templ,&Loc,&Val);
+                Match_found= ScaleandMatch(cap_frame,img_template);
 
-                        if (match_low<Val&&Val<match_high)
-                        {
-                            DrawResults(img,scalRot_templ,Loc,draw_rectangle);
-                            Match_found=true;
-                        }
-                    }
-                }
-            }
-        }
-
-        else
-        {
-            Mat cats[]={test_input,test_input2,test_input3,test_input4};
-            // TEST CODE FOR WHEN NEEDED //
-            for (Mat c:cats)
-            {
-                c.copyTo(img);
-                Match_found=false;
-                // TO DO! MOVE THIS ALL TO MATCHING.CPP?
-
-                // while means the for loops stop when match is found
-                while(Match_found==false)
-                {
-                    for(double j:scales)
-                    {
-                        for(int i:angles)
-                        {
-                            scalRot_templ=ScaleandRotateTemplate(img_template,i,j);
-
-                            if((scalRot_templ.size().height>img.size().height)||(scalRot_templ.size().width>img.size().width))
-                            {
-                                //clog<<"skipped due to non matching sizes\n";
-                                break;
-                            }
-                            else
-                            {
-                                result=CheckMatch(c,scalRot_templ,&Loc,&Val);
-
-                                if (match_low<Val&&Val<match_high)
-                                {
-                                    DrawResults(img,scalRot_templ,Loc,draw_rectangle);
-                                    Match_found=true;
-                                    // clog<<"match found \n";
-                                }
-                            }
-                        }
-                    }
                     if (Match_found==false)
                     {
                         putText(img,"X",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
                         Match_found=true;// figure out a better solution for this
                     }
+                    else{
+                       putText(img,"match found",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);// DrawResults(img,scalRot_templ,Loc,draw_rectangle);
+                    }
                 }
-                imshow(vid_window,img);//waitKey(1);
-                waitKey(1);
-            }
 
-            // Display the windows :)
-            // imshow("rot_template",scalRot_templ);
-            // imshow(match_results,result);
+            }
+        imshow("template",img_template);
+            imshow(vid_window,img);//waitKey(1);
+            waitKey(1);
         }
-    }
+
+        // else
+        // {
+        //     break;
+        //     Mat cats[]={test_input,test_input2,test_input3,test_input4};
+        //     // TEST CODE FOR WHEN NEEDED //
+        //     for (Mat c:cats)
+        //     {
+        //         c.copyTo(img);
+        //         Match_found=false;
+        //         // TO DO! MOVE THIS ALL TO MATCHING.CPP?
+
+        //         // while means the for loops stop when match is found
+        //         while(Match_found==false)
+        //         {
+        //             for(double j:scales)
+        //             {
+        //                 for(int i:angles)
+        //                 {
+        //                     scalRot_templ=ScaleandRotateTemplate(img_template,i,j);
+
+        //                     if((scalRot_templ.size().height>img.size().height)||(scalRot_templ.size().width>img.size().width))
+        //                     {
+        //                         //clog<<"skipped due to non matching sizes\n";
+        //                         break;
+        //                     }
+        //                     else
+        //                     {
+        //                         result=CheckMatch(c,scalRot_templ,&Loc,&Val);
+
+        //                         if (match_low<Val&&Val<match_high)
+        //                         {
+        //                             DrawResults(img,scalRot_templ,Loc,draw_rectangle);
+        //                             Match_found=true;
+        //                             // clog<<"match found \n";
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //             if (Match_found==false)
+        //             {
+        //                 putText(img,"X",Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
+        //                 Match_found=true;// figure out a better solution for this
+        //             }
+        //         }
+        //         imshow(vid_window,img);//waitKey(1);
+        //         waitKey(1);
+        //     }
+
+        //     // Display the windows :)
+        //     // imshow("rot_template",scalRot_templ);
+        //     // imshow(match_results,result);
+        // }
+        // putText(img,to_string(Val),Point(img.size().width/2,img.size().height/2),2,2.0,Scalar(0,0,200),2,2,0);
+
+        // imshow(vid_window,img);//waitKey(1);
+        //  waitKey(1);
+    //}
     return 0;
 }
