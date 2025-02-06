@@ -1,6 +1,7 @@
 // my header files
 #include <iostream>
 #include <vector>
+#include <thread>
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/highgui.hpp"
@@ -21,7 +22,7 @@ using namespace cv;
 #define TEST false
 #define CAMERA 0
 // 0 = open default camera
-
+void displayWindows(Mat img_template,Mat img);
 int main()
 {
     Mat img_template;
@@ -32,8 +33,8 @@ int main()
     Mat test_input4;
 
     // Load and name windows
-    const char *vid_window = "Video Feed with Match Square";
-    namedWindow(vid_window, WINDOW_AUTOSIZE);
+    // const char *vid_window = "Video Feed with Match Square";
+    // namedWindow(vid_window, WINDOW_AUTOSIZE);
    // const char *match_results = "Image Matching";
    // namedWindow(match_results, WINDOW_AUTOSIZE);
 
@@ -75,10 +76,10 @@ int main()
         // Point Loc;
         Mat img, result, scalRot_templ, scaled_templ;
         //double Val;
-
         bool Match_found=false;
 
 
+        //thread display (displayWindows,img_template,cap_frame);
         // see if we load the test frame or camera
         if (TEST==false)
         {
@@ -91,8 +92,11 @@ int main()
             }
             cap_frame.copyTo(img);
 
+
+            //thread match (ScaleandMatch(cap_frame,img_template));
             // Check for match
-            Match_found= ScaleandMatch(cap_frame,img_template);
+            double scale;
+            Match_found= ScaleandMatch(cap_frame,img_template,&scale);
 
             if (Match_found==false)
             {
@@ -104,10 +108,10 @@ int main()
             }
         }
 
+        imshow("template",img_template);
+        imshow("vid_window",img);//waitKey(1);
+        waitKey(1);
 
-            imshow("template",img_template);
-            imshow(vid_window,img);//waitKey(1);
-            waitKey(1);
         }
 
         // else
@@ -168,4 +172,11 @@ int main()
         //  waitKey(1);
     //}
     return 0;
+}
+
+void displayWindows(Mat img_template,Mat img)
+{
+    imshow("template",img_template);
+    imshow("vid_window",img);//waitKey(1);
+    waitKey(1);
 }

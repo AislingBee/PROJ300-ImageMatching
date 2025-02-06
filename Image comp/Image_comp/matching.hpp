@@ -10,7 +10,7 @@ using namespace std;
 
 Mat ScaleandRotateTemplate(Mat templ, double angle, double scale);
 Mat CheckMatch(Mat frame, Mat templ,Point* matchLoc, double* matchVal);
-bool ScaleandMatch(Mat frame, Mat templ);
+bool ScaleandMatch(Mat frame, Mat templ, double* scale);
 
 // not really useful, may remove?
 enum draw{
