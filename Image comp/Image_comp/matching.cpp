@@ -1,4 +1,39 @@
 #include "matching.hpp"
+bool ScaleandMatch(Mat frame, Mat templ, double* scale)
+{
+    Mat scalRot_templ, result;
+    Point Loc;
+    double Val;
+    double scales[]={1,0.25,0.5,1.25,1.5};
+    //double angles[]={0,90,180,270};
+    double match_high=0.22;
+    double match_low=0.0001;
+// maybe do a standard check of 1 and 0 for scale and angle and if Val is below certain number then do the various scales and angles?
+    //result=CheckMatch(frame,templ,&Loc,&Val);
+    // if (Val>0.6){
+    //     return false;
+    // }
+    // else{
+    for(double j:scales)
+    {
+        //for(int i:angles)
+        //{
+            scalRot_templ=ScaleandRotateTemplate(templ,0,j);
+            if((scalRot_templ.size().height<frame.size().height)||(scalRot_templ.size().width<frame.size().width))
+            {
+                result=CheckMatch(frame,scalRot_templ,&Loc,&Val);
+
+                if (match_low<Val&&Val<match_high)
+                {
+                    *scale=j;
+                    return true;
+
+                }
+            }
+       // }
+    }
+    return false;
+    }//}
 
 Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
 {
@@ -14,13 +49,16 @@ Mat ScaleandRotateTemplate(Mat templ, double angle, double scale)
         resize(templ, scaled_temp, Size(), scale, scale, INTER_LINEAR);
     }
 
-    // rotate
-    Point centrePoint (scaled_temp.size().width/2, scaled_temp.size().height/2);
-    rotMatrix=getRotationMatrix2D(centrePoint,angle,1.0);
-    warpAffine(scaled_temp,scaled_rotate_temp,rotMatrix,Size(scaled_temp.size().width,scaled_temp.size().height));
-
+    // rotate only bother if angle is changing
+    if (angle>0.0||angle<0.0)
+    {
+        Point centrePoint (scaled_temp.size().width/2, scaled_temp.size().height/2);
+        rotMatrix=getRotationMatrix2D(centrePoint,angle,1.0);
+        warpAffine(scaled_temp,scaled_rotate_temp,rotMatrix,Size(scaled_temp.size().width,scaled_temp.size().height));
+    }
     // return
-    return scaled_rotate_temp;
+    //return scaled_rotate_temp;
+    return scaled_temp;
 }
 
 Mat CheckMatch(Mat frame, Mat templ, Point* matchLoc, double* matchVal)
