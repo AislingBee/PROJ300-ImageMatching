@@ -55,13 +55,20 @@ int main() {
 
         //  draw guil
         for (vector<Vec4f>::iterator iter = positionGuil.begin(); iter != positionGuil.end(); ++iter) {
-            RotatedRect rRect = RotatedRect(Point2f((*iter)[0], (*iter)[1]),
-                                            Size2f(w * (*iter)[2], h * (*iter)[2]),
-                                            (*iter)[3]);
-            Point2f vertices[4];
-            rRect.points(vertices);
-            for (int i = 0; i < 4; i++)
-                line(image, vertices[i], vertices[(i + 1) % 4], Scalar(0, 255, 0), 2);
+            // [0]: x coordinate of center point
+            // [1]: y coordinate of center point
+            // [2]: scale of detected object compared to template
+            // [3]: rotation of detected object in degree in relation to template
+
+            // to make prettier still
+            float scale=(*iter)[2];
+            Point location_top,location_bottom;
+            location_top.x=(*iter)[0]-((w*scale)/2);
+            location_top.y=(*iter)[1]-((h*scale)/2);
+            location_bottom.x=(*iter)[0]+((w*scale)/2);
+            location_bottom.y=(*iter)[1]+((h*scale)/2);
+            rectangle(image,location_top,location_bottom,Scalar(0, 255, 0),2);
+
         }
 
         // show windows
