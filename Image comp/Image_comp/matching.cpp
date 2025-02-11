@@ -1,4 +1,31 @@
 #include "matching.hpp"
+
+void SetupHoughGuilParams(Mat templ,Ptr<GeneralizedHoughGuil> guil)
+{
+    //  create guil and set options // green
+    guil->setMinDist(10);   //10
+    guil->setLevels(360);   //360
+    guil->setDp(5); //3
+    guil->setMaxBufferSize(1000);    //1000
+
+    guil->setMinAngle(0);   //0
+    guil->setMaxAngle(360); //360
+    guil->setAngleStep(45); //1
+    guil->setAngleThresh(500);  //1500
+
+    guil->setMinScale(0.5); //0.5
+    guil->setMaxScale(2.0); //2.0
+    guil->setScaleStep(0.25);   //0.05
+    guil->setScaleThresh(50);   //50
+
+    guil->setPosThresh(50); //10
+
+    guil->setCannyLowThresh(50);    //30
+    guil->setCannyHighThresh(100);  //110
+
+    guil->setTemplate(templ);
+}
+
 bool ScaleandMatch(Mat frame, Mat templ, double* scale, Point* Loc)
 {
     Mat scalRot_templ, result;
@@ -69,17 +96,6 @@ Mat CheckMatch(Mat frame, Mat templ, Point* matchLoc, double* matchVal)
     return result;
 }
 
-void DrawResults(Mat frame,Mat templ,Point location,draw shape){
-    switch(shape)
-    {
-        case draw_rectangle:
-            rectangle(frame,location,Point(location.x+templ.cols,location.y+templ.rows),Scalar(0,0,0),2,8,0);
-            break;
-        case draw_text:
-            break;
-    }
-
-}
 // Mat MatchRotatedFrames(Mat frame, Mat templ, Mat img)
 // {
 //     angles = {0,45,90,135,180,225,270,315,360};

@@ -19,7 +19,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -g -std=gnu++11 -Wall -Wextra -Wextra
 INCPATH       = -I..\Image_comp -I. -I..\..\..\..\AINT308Lib\OpenCV41\release\install\include -I..\..\..\..\Qt\5.15.2\mingw81_64\mkspecs\win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,console -mthreads
-LIBS        =        -LC:\AINT308Lib\OpenCV41\release\lib -lopencv_core411 -lopencv_highgui411 -lopencv_imgproc411 -lopencv_calib3d411 -lopencv_videoio411 -lopencv_imgcodecs411 -lopencv_face411 -lopencv_objdetect411 -lopencv_features2d411 -lws2_32   
+LIBS        =        -LC:\AINT308Lib\OpenCV41\release\lib -lopencv_core411 -lopencv_highgui411 -lopencv_imgproc411 -lopencv_calib3d411 -lopencv_videoio411 -lopencv_video411 -lopencv_imgcodecs411 -lopencv_face411 -lopencv_objdetect411 -lopencv_features2d411 -lws2_32   
 QMAKE         = C:\Qt\5.15.2\mingw81_64\bin\qmake.exe
 DEL_FILE      = del
 CHK_DIR_EXISTS= if not exist
@@ -188,6 +188,7 @@ debug/main.o: ../Image_comp/main.cpp ../../../../AINT308Lib/OpenCV41/release/ins
 		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/flann/config.h \
 		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/imgproc/imgproc.hpp \
 		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/imgproc.hpp \
+		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/video/tracking.hpp \
 		../Image_comp/matching.hpp \
 		../Image_comp/checkloaded.hpp \
 		../Image_comp/testparams.hpp
