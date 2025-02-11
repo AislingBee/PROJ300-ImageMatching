@@ -58,7 +58,8 @@ OBJECTS       = release/checkloaded.o \
 		release/matching.o
 
 DIST          = ../images checkloaded.hpp \
-		matching.hpp ..\Image_comp\checkloaded.cpp \
+		matching.hpp \
+		testparams.hpp ..\Image_comp\checkloaded.cpp \
 		..\Image_comp\main.cpp \
 		..\Image_comp\matching.cpp
 QMAKE_TARGET  = Image_comp
@@ -188,7 +189,8 @@ release/main.o: ../Image_comp/main.cpp ../../../../AINT308Lib/OpenCV41/release/i
 		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/imgproc/imgproc.hpp \
 		../../../../AINT308Lib/OpenCV41/release/install/include/opencv2/imgproc.hpp \
 		../Image_comp/matching.hpp \
-		../Image_comp/checkloaded.hpp
+		../Image_comp/checkloaded.hpp \
+		../Image_comp/testparams.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\main.o ..\Image_comp\main.cpp
 
 release/matching.o: ../Image_comp/matching.cpp ../Image_comp/matching.hpp \

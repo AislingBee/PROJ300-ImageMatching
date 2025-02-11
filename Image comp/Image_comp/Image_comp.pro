@@ -36,4 +36,5 @@ DISTFILES += \
 
 HEADERS += \
     checkloaded.hpp \
-    matching.hpp
+    matching.hpp \
+    testparams.hpp
