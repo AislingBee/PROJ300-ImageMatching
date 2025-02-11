@@ -21,35 +21,20 @@ using namespace cv;
 
 void displayWindows(Mat img_template,Mat img);
 
+
 int main()
 {
-    Mat img_template;
-    VideoCapture input_cap;
-
-    // Open the template and test images
-    img_template = imread(TEMPLATE_PATH);
+    // load template and check it was succesful
+    Mat img_template = imread(TEMPLATE_PATH);
     if (!ImageLoad(img_template))
     {
         return -1;
     }
 
-    // check if this is test, if so load test images
-    if (TEST==true)
+    // video cam or test array
+    if (TEST==false)
     {
-        int i =0;
-        for (const char *test_img:testpaths)
-        {
-            test_input = imread(test_img);
-            if (!ImageLoad(test_input))
-            {
-                return -1;
-            }
-            testImgArr[i]=test_input;
-            i++;
-        }
-    }
-    else    // if not test open camera instead
-    {
+        VideoCapture input_cap;
         /*
         https://docs.opencv.org/4.x/d8/dfe/classcv_1_1VideoCapture.html
         open the default camera using default API OR advance usage: select any API backend
@@ -63,16 +48,13 @@ int main()
         {
             return-1;
         }
-    }
 
-    while(1)
-    {
-        Mat img, result, scalRot_templ, scaled_templ;
-        bool Match_found=false;
-
-        // see if we load the test frame or camera
-        if (TEST==false)
+        // main loop
+        while(1)
         {
+            Mat img, result, scalRot_templ, scaled_templ;
+            bool Match_found;
+
             // Read the camera input
             Mat cap_frame;
             input_cap.read(cap_frame);
@@ -97,12 +79,34 @@ int main()
                 scalRot_templ=ScaleandRotateTemplate(img_template,0.0,scale);
                 DrawResults(img,scalRot_templ,Loc,draw_rectangle);
             }
+
+            // Display windows
             imshow("template",img_template);
             imshow("vid_window",img);//waitKey(1);
             waitKey(1);
         }
-        else    //TEST=True
+        return 0;
+    }
+    else    // TEST CODE
+    {
+        int i =0;
+        for (const char *test_img:testpaths)
         {
+            test_input = imread(test_img);
+            if (!ImageLoad(test_input))
+            {
+                return -1;
+            }
+            testImgArr[i]=test_input;
+            i++;
+        }
+
+        // main loop
+        while(1)
+        {
+            Mat img, result, scalRot_templ;
+            bool Match_found;
+
             for (Mat c:testImgArr)
             {
                 c.copyTo(img);
@@ -121,18 +125,17 @@ int main()
                     scalRot_templ=ScaleandRotateTemplate(img_template,0.0,scale);
                     DrawResults(img,scalRot_templ,Loc,draw_rectangle);
                 }
+
+                // Display windows
                 imshow("template",img_template);
                 imshow("vid_window",img);//waitKey(1);
                 waitKey(1);
             }
-
         }
-
-
-
-        }
-    return 0;
+        return 0;
+    }
 }
+
 
 void displayWindows(Mat img_template,Mat img)
 {
