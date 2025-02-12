@@ -1,4 +1,11 @@
 #include "checkloaded.hpp"
+#include <iostream>
+
+#include "opencv2/features2d/features2d.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+using namespace std;
+using namespace cv;
 
 bool ImageLoad(Mat image)
 {

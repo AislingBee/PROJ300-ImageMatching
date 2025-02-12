@@ -1,27 +1,36 @@
 #include "matching.hpp"
+#include <iostream>
+#include "opencv2/core/core.hpp"
+#include "opencv2/features2d/features2d.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+
+using namespace cv;
+using namespace std;
+
+
 
 void SetupHoughGuilParams(Mat templ,Ptr<GeneralizedHoughGuil> guil)
 {
     //  create guil and set options // green
-    guil->setMinDist(10);   //10
+    guil->setMinDist(100);   //10
     guil->setLevels(360);   //360
     guil->setDp(5); //3
-    guil->setMaxBufferSize(500);    //1000
+    guil->setMaxBufferSize(1000);    //1000
 
     guil->setMinAngle(0);   //0
     guil->setMaxAngle(360); //360
     guil->setAngleStep(180); //1
     guil->setAngleThresh(500);  //1500
 
-    guil->setMinScale(0.25); //0.5
-    guil->setMaxScale(2.0); //2.0
+    guil->setMinScale(0.05); //0.5
+    guil->setMaxScale(2.05); //2.0
     guil->setScaleStep(0.25);   //0.05
     guil->setScaleThresh(50);   //50
 
-    guil->setPosThresh(50); //10
+    guil->setPosThresh(300); //10
 
-    guil->setCannyLowThresh(50);    //30
-    guil->setCannyHighThresh(100);  //110
+    guil->setCannyLowThresh(100);    //30
+    guil->setCannyHighThresh(200);  //110
 
     guil->setTemplate(templ);
 }

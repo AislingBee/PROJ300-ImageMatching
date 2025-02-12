@@ -24,7 +24,8 @@ LIBS += -lws2_32
 SOURCES += \
     checkloaded.cpp \
     main.cpp \
-    matching.cpp
+    matching.cpp \
+    testing.cpp
 
 
 DISTFILES += \
@@ -38,4 +39,4 @@ DISTFILES += \
 HEADERS += \
     checkloaded.hpp \
     matching.hpp \
-    testparams.hpp
+    testing.hpp
