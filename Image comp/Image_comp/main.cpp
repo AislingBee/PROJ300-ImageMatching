@@ -64,13 +64,6 @@ int main()
 
         //  draw guil
         for (vector<Vec4f>::iterator iter = positionGuil.begin(); iter != positionGuil.end(); ++iter) {
-            // RotatedRect rRect = RotatedRect(Point2f((*iter)[0], (*iter)[1]),
-            //                                 Size2f(w * (*iter)[2], h * (*iter)[2]),
-            //                                 (*iter)[3]);
-            // Point2f vertices[4];
-            // rRect.points(vertices);
-            // for (int i = 0; i < 4; i++)
-            //     line(image, vertices[i], vertices[(i + 1) % 4], Scalar(0, 255, 0), 2);
             circle(image,Point2f((*iter)[0], (*iter)[1]),4,Scalar(0, 255, 0),6);
         }
 
