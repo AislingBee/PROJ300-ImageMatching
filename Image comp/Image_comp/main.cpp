@@ -14,7 +14,7 @@
 #include "testing.hpp"
 
 #define TEMPLATE_PATH "../images/download.png"
-#define TEST_CATS "../images/test_images/cat_param_test.png"
+#define TEST_CATS "../images/test_images/cat.png"
 #define CAMERA 0    // 0 = open default camera
 
 #define TEST true

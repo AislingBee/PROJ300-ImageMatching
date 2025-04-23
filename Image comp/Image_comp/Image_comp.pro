@@ -4,9 +4,9 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 #=====================OpenCV Includes=======================
-INCLUDEPATH +=C:\opencv\opencv\build\include
+INCLUDEPATH +=C:\AINT308Lib\OpenCV41\release\install\include
 
-LIBS +=-LC:\opencv\opencv\build\x64\vc16\lib
+LIBS +=-LC:\AINT308Lib\OpenCV41\release\lib
 
 LIBS += -lopencv_core411 \
     -lopencv_highgui411 \
@@ -29,9 +29,13 @@ SOURCES += \
 
 
 DISTFILES += \
+   # C:\git\PROJ300-ImageMatching\Image_comp\images \
    ../images \
 
 HEADERS += \
     checkloaded.hpp \
     matching.hpp \
     testing.hpp
+
+RESOURCES += \
+    images.qrc
