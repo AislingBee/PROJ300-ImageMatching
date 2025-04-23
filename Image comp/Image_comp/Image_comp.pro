@@ -4,11 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 #=====================OpenCV Includes=======================
-INCLUDEPATH += C:\AINT308Lib\OpenCV41\release\install\include
+INCLUDEPATH +=C:\opencv\opencv\build\include
 
-LIBS += -LC:\AINT308Lib\OpenCV41\release\lib
-#LIBS += -LC:\AINT308Lib\OpenCV41\release\bin
-LIBS +=    -lopencv_core411 \
+LIBS +=-LC:\opencv\opencv\build\x64\vc16\lib
+
+LIBS += -lopencv_core411 \
     -lopencv_highgui411 \
     -lopencv_imgproc411 \
     -lopencv_calib3d411 \
@@ -30,11 +30,6 @@ SOURCES += \
 
 DISTFILES += \
    ../images \
-
-# Default rules for deployment.
-#qnx: target.path = /tmp/$${TARGET}/bin
-#else: unix:!android: target.path = /opt/$${TARGET}/bin
-#!isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
     checkloaded.hpp \
