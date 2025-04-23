@@ -4,20 +4,11 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 #=====================OpenCV Includes=======================
-<<<<<<< Updated upstream
 INCLUDEPATH +=C:\opencv\opencv\build\include
 
 LIBS +=-LC:\opencv\opencv\build\x64\vc16\lib
 
 LIBS += -lopencv_core411 \
-=======
-INCLUDEPATH += C:\AINT308Lib\OpenCV41\release\install\include
-#              C:\opencv\AINT308Lib\OpenCV41\release\install\include
-
-LIBS += -LC:\AINT308Lib\OpenCV41\release\bin
-#LIBS += -LC:\AINT308Lib\OpenCV41\release\bin
-LIBS +=    -lopencv_core411 \
->>>>>>> Stashed changes
     -lopencv_highgui411 \
     -lopencv_imgproc411 \
     -lopencv_calib3d411 \
